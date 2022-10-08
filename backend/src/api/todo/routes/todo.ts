@@ -1,12 +1,6 @@
-'use strict';
+import { factories } from '@strapi/strapi'
 
-/**
- * todo router.
- */
-
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::todo.todo', {
+export default factories.createCoreRouter('api::todo.todo', {
   config: {
     find: {
       middlewares: ['api::todo.todo-middleware'],
@@ -20,5 +14,6 @@ module.exports = createCoreRouter('api::todo.todo', {
     delete: {
       middlewares: ['api::todo.todo-middleware'],
     },
-  }
+  },
+  only: []
 });
