@@ -1,14 +1,9 @@
-'use strict';
+// @ts-nocheck
+import { factories } from "@strapi/strapi";
 
-/**
- * todo service.
- */
-
-const { createCoreService } = require('@strapi/strapi').factories;
-
-module.exports = createCoreService('api::todo.todo', ({ strapi }) => ({
+export default factories.createCoreService("api::todo.todo", ({ strapi }) => ({
   // Determine if entry belongs to the user
-  async findOne(entityId, params) {
+  async findOne(entityId, params = {}) {
     const entry = await strapi.db.query('api::todo.todo').findOne({
       where: { user: params.filters?.user },
       ...(params.populate ? { populate: params.populate } : null)

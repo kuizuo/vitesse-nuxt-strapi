@@ -1,12 +1,6 @@
-'use strict';
+import { factories } from '@strapi/strapi'
 
-/**
- *  todo controller
- */
-
-const { createCoreController } = require('@strapi/strapi').factories;
-
-module.exports = createCoreController('api::todo.todo', ({ strapi }) => ({
+export default factories.createCoreController('api::todo.todo', ({ strapi }) => ({
   async findOne(ctx) {
     const { id } = ctx.params;
     const { query } = ctx;
