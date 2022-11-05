@@ -15,5 +15,5 @@ export default factories.createCoreRouter('api::todo.todo', {
       middlewares: ['api::todo.todo-middleware'],
     },
   },
-  only: []
+  only: ['find', 'findOne', 'update', 'delete'],
 });
