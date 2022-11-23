@@ -1,17 +1,17 @@
 <h2 align="center">
-<a href="https://github.com/antfu/vitesse">Vitesse</a> for Nuxt3 and Strapi
+<a href="https://github.com/antfu/vitesse">Vitesse</a> for Nuxt and Strapi
 </h2><br>
 <pre align="center">
 🧪 Working in Progress
 </pre>
 <p align="center">
-Frontend 👉 <a href="https://vitesse-nuxt3-strapi.vercel.app">Vitesse Nuxt3 Strapi</a>
+Frontend 👉 <a href="https://vitesse-nuxt-strapi.vercel.app">Vitesse Nuxt Strapi</a>
 </p>
 <p align="center">
-Backend 👉 <a href="https://vitesse-nuxt3-strapi-admin.kuizuo.cn">Strapi Dashboard</a>
+Backend 👉 <a href="https://vitesse-nuxt-strapi-admin.kuizuo.cn">Strapi Dashboard</a>
 </p>
 <p align="center">
-<a href="https://stackblitz.com/github/kuizuo/vitesse-nuxt3-strapi"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt=""></a>
+<a href="https://stackblitz.com/github/kuizuo/vitesse-nuxt-strapi"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt=""></a>
 </p>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/61005888/188439957-2eca54fd-e848-4ab2-bba2-bfecb8d88bc1.png"/>
@@ -19,7 +19,7 @@ Backend 👉 <a href="https://vitesse-nuxt3-strapi-admin.kuizuo.cn">Strapi Dashb
 
 ## Features
 
-- 💚 [Nuxt 3](https://v3.nuxtjs.org) - SSR, ESR, File-based routing, components auto importing, modules, etc.
+- 💚 [Nuxt](https://nuxt.com) - SSR, ESR, File-based routing, components auto importing, modules, etc.
 
 - ⚡️ Vite - Instant HMR
 
@@ -59,22 +59,22 @@ We recommend using [VS Code](https://code.visualstudio.com/) with [Volar](https:
 
 ### Online
 
-<a href="https://stackblitz.com/github/kuizuo/vitesse-nuxt3-strapi"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt=""></a>
+<a href="https://stackblitz.com/github/kuizuo/vitesse-nuxt-strapi"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt=""></a>
 
 ### GitHub Template
 
-[Create a repo from this template on GitHub](https://github.com/kuizuo/vitesse-nuxt3-strapi/generate).
+[Create a repo from this template on GitHub](https://github.com/kuizuo/vitesse-nuxt-strapi/generate).
 
 ### Clone to local
 
 If you prefer to do it manually with the cleaner git history
 
 ```bash
-npx degit kuizuo/vitesse-nuxt3-strapi my-nuxt3-strapi-app
-cd my-nuxt3-strapi-app
+npx degit kuizuo/vitesse-nuxt-strapi my-nuxt-strapi-app
+cd my-nuxt-strapi-app
 pnpm i # If you don't have pnpm installed, run: npm install -g pnpm
 ```
 
 ## License
 
-[MIT License](https://github.com/kuizuo/vitesse-nuxt3-strapi/blob/main/LICENSE)
+[MIT License](./LICENSE)
