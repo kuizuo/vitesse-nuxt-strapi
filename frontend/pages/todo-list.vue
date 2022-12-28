@@ -4,7 +4,7 @@ import type { Todo } from '~/types'
 
 const { find, create, update, delete: _delete } = useStrapi4()
 
-const { data, refresh } = $(await useAsyncData<Strapi4Response<Todo>>('todos', () => find<Strapi4Response<Todo>>('todos'), { initialCache: false }))
+const { data, refresh } = $(await useAsyncData<Strapi4Response<Todo>>('todos', () => find<Strapi4Response<Todo>>('todos'), { initialCache: false, server: true }))
 
 const todos = $computed(() => data.data as unknown as Todo[])
 const activeTodos = $computed(() => todos.filter(t => t.attributes.status === false))
