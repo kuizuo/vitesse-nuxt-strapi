@@ -30,8 +30,7 @@ export default factories.createCoreController('api::todo.todo', ({ strapi }) => 
       return null
     }
 
-    let response = await super.update(ctx)
-    return response
+    return await super.update(ctx)
   },
   async delete(ctx) {
     const { id } = ctx.params;
@@ -44,8 +43,7 @@ export default factories.createCoreController('api::todo.todo', ({ strapi }) => 
       return null
     }
 
-    let response = await super.delete(ctx)
-    return response
+    return await super.delete(ctx)
     // const entity = await strapi.service('api::todo.todo').delete(id, query)
     // return this.transformResponse(entity);
   }

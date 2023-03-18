@@ -13,6 +13,7 @@ import {
   PasswordAttribute,
   BooleanAttribute,
   EnumerationAttribute,
+  BigIntegerAttribute,
   IntegerAttribute,
   DecimalAttribute,
   SetMinMax,
@@ -182,6 +183,7 @@ export interface AdminApiToken extends CollectionTypeSchema {
   attributes: {
     name: StringAttribute &
       RequiredAttribute &
+      UniqueAttribute &
       SetMinMaxLength<{
         minLength: 1;
       }>;
@@ -190,13 +192,22 @@ export interface AdminApiToken extends CollectionTypeSchema {
         minLength: 1;
       }> &
       DefaultTo<''>;
-    type: EnumerationAttribute<['read-only', 'full-access']> &
+    type: EnumerationAttribute<['read-only', 'full-access', 'custom']> &
+      RequiredAttribute &
       DefaultTo<'read-only'>;
     accessKey: StringAttribute &
       RequiredAttribute &
       SetMinMaxLength<{
         minLength: 1;
       }>;
+    lastUsedAt: DateTimeAttribute;
+    permissions: RelationAttribute<
+      'admin::api-token',
+      'oneToMany',
+      'admin::api-token-permission'
+    >;
+    expiresAt: DateTimeAttribute;
+    lifespan: BigIntegerAttribute;
     createdAt: DateTimeAttribute;
     updatedAt: DateTimeAttribute;
     createdBy: RelationAttribute<
@@ -214,30 +225,148 @@ export interface AdminApiToken extends CollectionTypeSchema {
   };
 }
 
-export interface ApiTodoTodo extends CollectionTypeSchema {
+export interface AdminApiTokenPermission extends CollectionTypeSchema {
   info: {
-    singularName: 'todo';
-    pluralName: 'todos';
-    displayName: 'Todo';
+    name: 'API Token Permission';
     description: '';
+    singularName: 'api-token-permission';
+    pluralName: 'api-token-permissions';
+    displayName: 'API Token Permission';
   };
-  options: {
-    draftAndPublish: true;
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
   };
   attributes: {
-    value: StringAttribute & RequiredAttribute;
-    status: BooleanAttribute & DefaultTo<false>;
-    user: RelationAttribute<
-      'api::todo.todo',
+    action: StringAttribute &
+      RequiredAttribute &
+      SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    token: RelationAttribute<
+      'admin::api-token-permission',
       'manyToOne',
-      'plugin::users-permissions.user'
+      'admin::api-token'
     >;
     createdAt: DateTimeAttribute;
     updatedAt: DateTimeAttribute;
-    publishedAt: DateTimeAttribute;
-    createdBy: RelationAttribute<'api::todo.todo', 'oneToOne', 'admin::user'> &
+    createdBy: RelationAttribute<
+      'admin::api-token-permission',
+      'oneToOne',
+      'admin::user'
+    > &
       PrivateAttribute;
-    updatedBy: RelationAttribute<'api::todo.todo', 'oneToOne', 'admin::user'> &
+    updatedBy: RelationAttribute<
+      'admin::api-token-permission',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+  };
+}
+
+export interface AdminTransferToken extends CollectionTypeSchema {
+  info: {
+    name: 'Transfer Token';
+    singularName: 'transfer-token';
+    pluralName: 'transfer-tokens';
+    displayName: 'Transfer Token';
+    description: '';
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: StringAttribute &
+      RequiredAttribute &
+      UniqueAttribute &
+      SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    description: StringAttribute &
+      SetMinMaxLength<{
+        minLength: 1;
+      }> &
+      DefaultTo<''>;
+    accessKey: StringAttribute &
+      RequiredAttribute &
+      SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    lastUsedAt: DateTimeAttribute;
+    permissions: RelationAttribute<
+      'admin::transfer-token',
+      'oneToMany',
+      'admin::transfer-token-permission'
+    >;
+    expiresAt: DateTimeAttribute;
+    lifespan: BigIntegerAttribute;
+    createdAt: DateTimeAttribute;
+    updatedAt: DateTimeAttribute;
+    createdBy: RelationAttribute<
+      'admin::transfer-token',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+    updatedBy: RelationAttribute<
+      'admin::transfer-token',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+  };
+}
+
+export interface AdminTransferTokenPermission extends CollectionTypeSchema {
+  info: {
+    name: 'Transfer Token Permission';
+    description: '';
+    singularName: 'transfer-token-permission';
+    pluralName: 'transfer-token-permissions';
+    displayName: 'Transfer Token Permission';
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    action: StringAttribute &
+      RequiredAttribute &
+      SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    token: RelationAttribute<
+      'admin::transfer-token-permission',
+      'manyToOne',
+      'admin::transfer-token'
+    >;
+    createdAt: DateTimeAttribute;
+    updatedAt: DateTimeAttribute;
+    createdBy: RelationAttribute<
+      'admin::transfer-token-permission',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+    updatedBy: RelationAttribute<
+      'admin::transfer-token-permission',
+      'oneToOne',
+      'admin::user'
+    > &
       PrivateAttribute;
   };
 }
@@ -353,49 +482,6 @@ export interface PluginUploadFolder extends CollectionTypeSchema {
       PrivateAttribute;
     updatedBy: RelationAttribute<
       'plugin::upload.folder',
-      'oneToOne',
-      'admin::user'
-    > &
-      PrivateAttribute;
-  };
-}
-
-export interface PluginI18NLocale extends CollectionTypeSchema {
-  info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: StringAttribute &
-      SetMinMax<{
-        min: 1;
-        max: 50;
-      }>;
-    code: StringAttribute & UniqueAttribute;
-    createdAt: DateTimeAttribute;
-    updatedAt: DateTimeAttribute;
-    createdBy: RelationAttribute<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      PrivateAttribute;
-    updatedBy: RelationAttribute<
-      'plugin::i18n.locale',
       'oneToOne',
       'admin::user'
     > &
@@ -533,11 +619,6 @@ export interface PluginUsersPermissionsUser extends CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    todos: RelationAttribute<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::todo.todo'
-    >;
     createdAt: DateTimeAttribute;
     updatedAt: DateTimeAttribute;
     createdBy: RelationAttribute<
@@ -555,6 +636,49 @@ export interface PluginUsersPermissionsUser extends CollectionTypeSchema {
   };
 }
 
+export interface PluginI18NLocale extends CollectionTypeSchema {
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: StringAttribute &
+      SetMinMax<{
+        min: 1;
+        max: 50;
+      }>;
+    code: StringAttribute & UniqueAttribute;
+    createdAt: DateTimeAttribute;
+    updatedAt: DateTimeAttribute;
+    createdBy: RelationAttribute<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+    updatedBy: RelationAttribute<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      PrivateAttribute;
+  };
+}
+
 declare global {
   namespace Strapi {
     interface Schemas {
@@ -562,13 +686,15 @@ declare global {
       'admin::user': AdminUser;
       'admin::role': AdminRole;
       'admin::api-token': AdminApiToken;
-      'api::todo.todo': ApiTodoTodo;
+      'admin::api-token-permission': AdminApiTokenPermission;
+      'admin::transfer-token': AdminTransferToken;
+      'admin::transfer-token-permission': AdminTransferTokenPermission;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
-      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::i18n.locale': PluginI18NLocale;
     }
   }
 }
